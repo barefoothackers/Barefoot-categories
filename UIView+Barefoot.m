@@ -78,6 +78,26 @@
   [self addSubview:view];
 }
 
+- (void)insertSubview:(UIView *)view beneath:(UIView *)otherView {
+  [self insertSubview:view beneath:otherView withTopOffset:0 bottomOffset:0];
+}
+- (void)insertSubview:(UIView *)view beneath:(UIView *)otherView withTopOffset:(CGFloat)topOffset bottomOffset:(CGFloat)bottomOffset {
+  CGRect frame;
+  for (UIView *subview in self.subviews) {
+    frame = subview.frame;
+    if (frame.origin.y >= otherView.frame.origin.y + otherView.frame.size.height) {
+      NSLog(@"Moving view %@", subview);
+      frame.origin.y += view.frame.size.height + topOffset + bottomOffset;
+      subview.frame = frame;
+      NSLog(@"Moved view %@", subview);
+    }
+  }
+  frame = view.frame;
+  frame.origin.y = otherView.frame.origin.y + otherView.frame.size.height + topOffset;
+  view.frame = frame;
+  [self addSubview:view];
+}
+
 - (void)sizeToFitWithPadding:(CGSize)padding
 {
   CGSize bounds = [self subviewBounds];
