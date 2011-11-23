@@ -86,10 +86,8 @@
   for (UIView *subview in self.subviews) {
     frame = subview.frame;
     if (frame.origin.y >= otherView.frame.origin.y + otherView.frame.size.height) {
-      NSLog(@"Moving view %@", subview);
       frame.origin.y += view.frame.size.height + topOffset + bottomOffset;
       subview.frame = frame;
-      NSLog(@"Moved view %@", subview);
     }
   }
   frame = view.frame;
