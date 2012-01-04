@@ -14,4 +14,5 @@
 - (void)sizeToFitWithPadding:(CGSize)padding;
 - (void)sizeToFitWithPadding:(CGSize)padding withMinimumSize:(CGSize)minSize;
 - (void)sizeHeightToFitWithPadding:(size_t)h;
+- (void)describe;
 @end

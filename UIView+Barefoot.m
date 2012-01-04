@@ -1,4 +1,5 @@
 #import "UIView+Barefoot.h"
+#import <QuartzCore/CALayer.h>
 
 @implementation UIView (Barefoot)
 
@@ -120,6 +121,22 @@
   CGRect frame = self.frame;
   frame.size.height = bounds.height + h;
   self.frame = frame;
+}
+
+- (void)describeWithSpaces:(NSUInteger)spaces {
+  NSString *s = @"";
+  for (NSUInteger i = 0; i <= spaces; i++) {
+    s = [s stringByAppendingString:@" "];
+  }
+  NSLog(@"%@%@", s, self);
+  spaces += 2;
+  for (UIView *subview in self.subviews) {
+    [subview describeWithSpaces:spaces];
+  }
+}
+
+- (void)describe {
+  [self describeWithSpaces:0];
 }
 
 @end
