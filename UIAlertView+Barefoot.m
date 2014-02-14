@@ -20,7 +20,41 @@
 
 @end
 
+@interface UIAlertViewHangaround : NSObject
+
+@property NSString *_hash;
+
++ (BOOL)alertViewIsAlreadyShowing:(NSString *)hash;
+
+@end
+
+@implementation UIAlertViewHangaround
+
+static NSMutableDictionary *hashes;
+
+- (void)setHash:(NSString *)hash {
+  self._hash = hash;
+  if (!hashes) {
+    hashes = [NSMutableDictionary dictionary];
+  }
+  [hashes setValue:@"YES" forKey:hash];
+}
+
++ (BOOL)alertViewIsAlreadyShowing:(NSString *)hash {
+  if ([hashes objectForKey:hash]) {
+    return YES;
+  }
+  return NO;
+}
+
+- (void)dealloc {
+  [hashes removeObjectForKey:self._hash];
+}
+
+@end
+
 static const char kUIAlertViewWrapperDelegate;
+static const char kUIAlertViewHangaround;
 
 @implementation UIAlertView (Barefoot)
 
@@ -42,6 +76,16 @@ static const char kUIAlertViewWrapperDelegate;
     }
   }
   return self;
+}
+
+- (void)showOne {
+  NSString *hash = [NSString stringWithFormat:@"%@%@", self.title, self.message];
+  if (![UIAlertViewHangaround alertViewIsAlreadyShowing:hash]) {
+    UIAlertViewHangaround *hangaround = [[UIAlertViewHangaround alloc] init];
+    [hangaround setHash:hash];
+    objc_setAssociatedObject(self, &kUIAlertViewHangaround, hangaround, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [self show];
+  }
 }
 
 @end
