@@ -10,7 +10,7 @@
 
 @implementation UIAlertViewDelegateWrapper
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   if (self.completionBlock) self.completionBlock(alertView, buttonIndex);
 }
 
